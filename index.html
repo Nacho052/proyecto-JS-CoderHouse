@@ -1,11 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Calculadora IMC</title>
 </head>
 <body>
+    <div class="container">
+        <h1>Calculadora IMC</h1>
+
+        <div id="calculator">
+            <input type="text" id="name" placeholder=" Tu nombre">
+            
+            <br>
+            <br>
+            <br>
+
+            <input type="number" id="weight" placeholder="Peso (kg)">
+
+            <br>
+            <br>
+            <br>
+
+            <input type="number" id="height" placeholder="Altura (cm)">
+
+            <br>
+            <br>
+            <br>
+
+            <button onclick="calcularIMC()">Calcular IMC</button>
+
+            <br>
+            <br>
+
+            <div id="result"></div>
+
+
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Rango de ICM</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Menos de 18.5</td>
+                    <td>Bajo peso</td>
+                </tr>
+
+                <tr>
+                    <td>18.5 - 24.9</td>
+                    <td>Peso normal</td>
+                </tr>
+
+                <tr>
+                    <td>25 - 29.9</td>
+                    <td>Sobrepeso</td>
+                </tr>
+
+                <tr>
+                    <td>30 o más</td>
+                    <td>Obesidad</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
     <script src="./main.js"></script>
 </body>
 </html>

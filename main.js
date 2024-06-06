@@ -1,80 +1,75 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+
+    // Carga los datos del localStorage si existen
+    cargarDatos();
+
+    document.querySelector('button').addEventListener('click', calcularIMC);
+});
+
 function calcularIMC() {
-    let imcPersonas = [];
-    let nombre = null;
-    let peso = null;
-    let altura = null;
-    let imc = null;
-    let nombreOk = false;
-    let pesoOk = false;
-    let altOk = false;
-    let p1 = null;
+    let nombre = document.getElementById('name').value.trim();
+    let peso = parseFloat(document.getElementById('weight').value);
+    let altura = parseFloat(document.getElementById('height').value);
 
-    do {
-        nombre = prompt("¿Cual es tu nombre? (Escribe 'salir' para terminar)");
-        if (nombre.toLowerCase() === "salir") {
-            break;
-        } else if (nombre === "") {
-            alert("Coloca un nombre correcto");
-            nombreOk = false;
-        } else {
-            nombreOk = true;
-        }
+    if (nombre === "") {
+        alert("Coloca un nombre correcto");
+        return;
+    }
 
+    if (isNaN(peso) || peso <= 0) {
+        alert("Coloca un peso correcto");
+        return;
+    }
 
-        
-        peso = prompt("¿Cuál es tu peso en kg?");
-        if (peso.toLowerCase() === "salir") {
-            break;
-        } else if (isNaN(peso) || peso <= 0 || peso === "") {
-            alert("Coloca un peso correcto");
-            pesoOk = false;
-        } else {
-            pesoOk = true;
-        }
+    if (isNaN(altura) || altura <= 0) {
+        alert("Coloca una altura correcta");
+        return;
+    }
 
-        altura = prompt("¿Cuál es tu altura en CM?");
-        if (altura.toLowerCase() === "salir") {
-            break;
-        } else if (isNaN(altura) || altura <= 0 || altura === "") {
-            alert("Coloca una altura correcta");
-            altOk = false;
-        } else {
-            altOk = true;
-        }
+    let imc = calcularIMCValor(peso, altura);
+    let estado;
 
-        if (nombreOk && pesoOk && altOk) {
-            imc = calcularIMCValor(peso, altura);
+    if (imc < 18.5) {
+        estado = "Bajo peso";
+    } else if (imc < 25) {
+        estado = "Peso normal";
+    } else if (imc < 30) {
+        estado = "Sobrepeso";
+    } else {
+        estado = "Obesidad";
+    }
 
-            if (imc < 18.5) {
-                console.log("Bajo peso");
-                p1 = "Bajo peso";
-            } else if (imc < 25) {
-                console.log("Peso normal");
-                p1 = "Peso normal";
-            } else if (imc < 30) {
-                console.log("Sobrepeso");
-                p1 = "Sobrepeso";
-            } else {
-                console.log("Obesidad");
-                p1 = "Obesidad";
-            }
+    let resultado = `Nombre: ${nombre}, Tu IMC es: ${imc.toFixed(2)}, Tienes: ${estado}`;
+    
+    document.getElementById('result').innerText = resultado;
 
-            let datosPersonas = {
-                persona: nombre,
-                masa: peso,
-                estatura: altura,
-                resultado: p1
-            };
-            imcPersonas.push(datosPersonas);
-        }
-
-    } while (true);
-
-    console.log(imcPersonas);
+    // Guardar datos en localStorage
+    localStorage.setItem('nombre', nombre);
+    localStorage.setItem('peso', peso);
+    localStorage.setItem('altura', altura);
+    localStorage.setItem('imc', imc.toFixed(2));
+    localStorage.setItem('estado', estado);
 }
 
+// function para calcular el IMC
 function calcularIMCValor(peso, altura) {
     return peso / ((altura / 100) ** 2);
 }
 
-calcularIMC();
+// function cargarDatos en localStorge
+function cargarDatos() {
+    let nombre = localStorage.getItem('nombre');
+    let peso = localStorage.getItem('peso');
+    let altura = localStorage.getItem('altura');
+    let imc = localStorage.getItem('imc');
+    let estado = localStorage.getItem('estado');
+
+    if (nombre && peso && altura && imc && estado) {
+        document.getElementById('name').value = nombre;
+        document.getElementById('weight').value = peso;
+        document.getElementById('height').value = altura;
+
+        let resultado = `Nombre: ${nombre}, Tu IMC es: ${imc}, Tienes: ${estado}`;
+        document.getElementById('result').innerText = resultado;
+    }
+}
